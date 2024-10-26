@@ -10,7 +10,7 @@ rm -rf /content/DDFA
 echo "실행중..."
 rm -rf /content/DeepDFA/DDFA/storage/cache
 rm -rf /content/DeepDFA/DDFA/storage/processed/bigvul
-
+mkdir /content/DeepDFA/DDFA/storage/processed/bigvul
 cd /content/DeepDFA/DDFA/sastvd/scripts
 python /content/DeepDFA/DDFA/sastvd/scripts/prepare.py --dataset bigvul
 python /content/DeepDFA/DDFA/sastvd/scripts/getgraphs.py bigvul --overwrite
