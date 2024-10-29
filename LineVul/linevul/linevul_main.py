@@ -15,12 +15,12 @@
 # limitations under the License.
 
 from __future__ import absolute_import, division, print_function
-import argparse
 import sys
 sys.path.append("/content/DeepDFA/DDFA/")
 sys.path.append("/content/DeepDFA/DDFA/sastvd/")
 sys.path.append("/content/DeepDFA/LineVul/linevul/")
 sys.path.append("/content/DeepDFA/LineVul/")
+import argparse
 import logging
 import os
 import random
@@ -187,65 +187,21 @@ def train(args, train_dataset, model, tokenizer, eval_dataset, flowgnn_dataset):
 
     num_missing = 0
 
-    # for idx in range(args.epochs): 
-    #     bar = tqdm(train_dataloader,total=len(train_dataloader))
-    #     tr_num = 0
-    #     train_loss = 0
-    #     for step, batch in enumerate(bar):
-    #         (inputs_ids, labels, index) = [x.to(args.device) for x in batch]
-    #         if flowgnn_dataset is None:
-    #             graphs=None
-    #         else:
-    #             graphs, keep_idx = flowgnn_dataset.get_indices(index)
-
-    #             if not graphs:
-    #                 # 빈 그래프 리스트를 처리하는 예외 또는 로깅
-    #                 print(f"No graphs found for index {index}. Skipping this batch.")
-    #                 continue
-
-
     for idx in range(args.epochs): 
-        bar = tqdm(train_dataloader, total=len(train_dataloader))
+        bar = tqdm(train_dataloader,total=len(train_dataloader))
         tr_num = 0
         train_loss = 0
         for step, batch in enumerate(bar):
             (inputs_ids, labels, index) = [x.to(args.device) for x in batch]
             if flowgnn_dataset is None:
-                graphs = None
+                graphs=None
             else:
                 graphs, keep_idx = flowgnn_dataset.get_indices(index)
-
-                # 빈 그래프 리스트일 경우 처리
-                if graphs is None or len(keep_idx) == 0:
-                    print(f"No valid graphs found for index {index}. Skipping this batch.")
-                    continue
-
-                # keep_idx로 inputs_ids와 labels 재정렬
+                num_missing += len(labels) - len(keep_idx)
                 inputs_ids = inputs_ids[keep_idx]
                 labels = labels[keep_idx]
-
             model.train()
             loss, logits = model(input_ids=inputs_ids, labels=labels, graphs=graphs)
-
-
-
-
-    # for idx in range(args.epochs): 
-    #     bar = tqdm(train_dataloader,total=len(train_dataloader))
-    #     tr_num = 0
-    #     train_loss = 0
-    #     for step, batch in enumerate(bar):
-    #         (inputs_ids, labels, index) = [x.to(args.device) for x in batch]
-    #         if flowgnn_dataset is None:
-    #             graphs=None
-    #         else:
-    #             graphs, keep_idx = flowgnn_dataset.get_indices(index)
-    #             num_missing += len(labels) - len(keep_idx)
-    #             inputs_ids = inputs_ids[keep_idx]
-    #             labels = labels[keep_idx]
-    #         model.train()
-    #         loss, logits = model(input_ids=inputs_ids, labels=labels, graphs=graphs)
-
             if args.n_gpu > 1:
                 loss = loss.mean()
             if args.gradient_accumulation_steps > 1:
@@ -695,6 +651,8 @@ def main():
         model.to(args.device)
         evaluate(args, model, tokenizer)
     # Test
+    
+
     if args.do_test:
         if os.path.exists(args.model_name):
             output_dir = args.model_name
