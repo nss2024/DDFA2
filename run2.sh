@@ -11,8 +11,9 @@ echo "실행중..."
 rm -rf /content/DeepDFA/DDFA/storage/cache
 rm -rf /content/DeepDFA/DDFA/storage/processed/bigvul
 mkdir /content/DeepDFA/DDFA/storage/processed/bigvul
-cd /content/DeepDFA/DDFA/sastvd/scripts
-bash /content/DeepDFA/DDFA/scripts/preprocess.sh
+
+#cd /content/DeepDFA/DDFA/sastvd/scripts
+#bash /content/DeepDFA/DDFA/scripts/preprocess.sh
 
 # python /content/DeepDFA/DDFA/sastvd/scripts/prepare.py --dataset bigvul
 # python /content/DeepDFA/DDFA/sastvd/scripts/getgraphs.py bigvul --overwrite
@@ -23,8 +24,9 @@ bash /content/DeepDFA/DDFA/scripts/preprocess.sh
 # python /content/DeepDFA/DDFA/sastvd/scripts/dbize_absdf.py
 
 
-
-python /content/DeepDFA/DDFA/code_gnn/main_cli.py fit --config /content/DeepDFA/DDFA/configs/config_bigvul.yaml --config /content/DeepDFA/DDFA/configs/config_ggnn.yaml
+# linevul 폴더 아래의 data에 test val train (용량 10기가 이상) 넣고 linevul + deepdfa 돌리기(msr_train_combined)
+#bash scripts/msr_train_combined.sh 1 MSR
+#python /content/DeepDFA/DDFA/code_gnn/main_cli.py fit --config /content/DeepDFA/DDFA/configs/config_bigvul.yaml --config /content/DeepDFA/DDFA/configs/config_ggnn.yaml
 
 #train
 #python code_gnn/main_cli.py fit --config configs/config_bigvul.yaml --config configs/config_ggnn.yaml $@
