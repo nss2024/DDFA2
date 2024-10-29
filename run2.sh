@@ -12,9 +12,12 @@ rm -rf /content/DeepDFA/DDFA/storage/cache
 rm -rf /content/DeepDFA/DDFA/storage/processed/bigvul
 mkdir /content/DeepDFA/DDFA/storage/processed/bigvul
 
+#스크립트로 돌리기
 #cd /content/DeepDFA/DDFA/sastvd/scripts
 #bash /content/DeepDFA/DDFA/scripts/preprocess.sh
 
+
+# 파이썬으로 돌리기
 # python /content/DeepDFA/DDFA/sastvd/scripts/prepare.py --dataset bigvul
 # python /content/DeepDFA/DDFA/sastvd/scripts/getgraphs.py bigvul --overwrite
 # python /content/DeepDFA/DDFA/sastvd/scripts/dbize.py
